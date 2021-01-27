@@ -7,6 +7,7 @@ import (
 	"time"
 	"net/http"
 	"io/ioutil"
+	//"encoding/json"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -38,6 +39,16 @@ func resourceApplication() *schema.Resource {
 				Optional: true,
 				Computed: true,
 			},
+			"debuga": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
+			"debugb": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
 		},
 	}
 }
@@ -53,6 +64,17 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 
 	url := base_url + "/controller/restui/allApplications/createApplication?applicationType=APM%0A"
 	bearer := "Bearer " + token
+
+	// change := map[string]string{
+	// 	"name": d.Get("name").(string),
+	// 	"description": d.Get("description").(string),
+	// }
+	//
+	// j, err := json.Marshal(change)
+	//
+	// payload := strings.NewReader(j)
+  //change := "{\"name\": \"tftesting1234\", \"description\": \"\"}"
+	//change := fmt.Sprintf("{\"name\": \"tftesting1234\", \"description\": \"\"}", data)
 
 	payload := strings.NewReader("{\"name\": \"tftesting1234\", \"description\": \"\"}")
 
@@ -99,6 +121,9 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 
 	fmt.Println(res)
 	fmt.Println(string(body))
+
+  d.Set("debuga", res)
+	d.Set("debugb", string(body))
 
 	d.SetId("1111")
 	d.Set("version", "1")
