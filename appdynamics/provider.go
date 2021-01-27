@@ -39,13 +39,13 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 	var diags diag.Diagnostics
 
 	if (base_url != "") && (token != "") {
-		return nil, diags
+		provider_data := map[string]string{
+			"base_url": base_url,
+			"token":token,
+		}
+
+		return provider_data, diags
 	}
 
-	provider_data := map[string]string{
-		"base_url": base_url,
-		"token":token,
-	}
-
-	return provider_data, diags
+	return nil, diags
 }
