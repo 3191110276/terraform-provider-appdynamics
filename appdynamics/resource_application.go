@@ -7,7 +7,7 @@ import (
 	"time"
 	"net/http"
 	"io/ioutil"
-	//"encoding/json"
+	"encoding/json"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -65,17 +65,6 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	url := base_url + "/controller/restui/allApplications/createApplication?applicationType=APM%0A"
 	bearer := "Bearer " + token
 
-	// change := map[string]string{
-	// 	"name": d.Get("name").(string),
-	// 	"description": d.Get("description").(string),
-	// }
-	//
-	// j, err := json.Marshal(change)
-	//
-	// payload := strings.NewReader(j)
-  //change := "{\"name\": \"tftesting1234\", \"description\": \"\"}"
-	//change := fmt.Sprintf("{\"name\": \"tftesting1234\", \"description\": \"\"}", data)
-
 	payload := strings.NewReader("{\"name\": \"tftesting1234\", \"description\": \"\"}")
 
 	req, _ := http.NewRequest("POST", url, payload)
@@ -92,6 +81,9 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	fmt.Println(res)
 	fmt.Println(string(body))
 
+	d.Set("debuga", res)
+	d.Set("debugb", string(body))
+
 	resourceApplicationRead(ctx, d, m)
 
 	return diags
@@ -106,7 +98,7 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
   base_url := provider_data["base_url"]
 	token := provider_data["token"]
 
-  url := base_url + "/controller/rest/applications"
+  url := base_url + "/controller/rest/applications?output=json"
 	bearer := "Bearer " + token
 
 	req, _ := http.NewRequest("GET", url, nil)
@@ -122,8 +114,8 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 	fmt.Println(res)
 	fmt.Println(string(body))
 
-  d.Set("debuga", res)
-	d.Set("debugb", string(body))
+  //d.Set("debuga", res)
+	//d.Set("debugb", string(body))
 
 	d.SetId("1111")
 	d.Set("version", "1")
