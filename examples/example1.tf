@@ -1,13 +1,22 @@
+terraform {
+  required_providers {
+    appdynamics = {
+      version = "0.0.3"
+      source = "3191110276/appdynamics"
+    }
+  }
+}
+
 provider "appdynamics" {
   base_url = "dos"
   token = "test123"
 }
 
-resource "appd_app" "brewery" {
+resource "appdynamics_application" "brewery" {
   name = "brewery"
   description = "test"
 }
 
 output "new_app" {
-  value = appd_app.brewery
+  value = appdynamics_application.brewery
 }
