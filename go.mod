@@ -1,4 +1,4 @@
-module github.com/hashicorp/terraform-provider-hashicups
+module github.com/3191110276/terraform-provider-appdynamics
 
 go 1.13
 
