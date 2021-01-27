@@ -2,29 +2,19 @@ terraform {
   required_providers {
     appdynamics = {
       #versions = ["0.3"]
-      source = "github.com/3191110276/terraform-provider-appdynamics"
+      source = "github.com/3191110276/appdynamics"
     }
   }
 }
 
 provider "appdynamics" {
-  username = "dos"
-  password = "test123"
+  base_url = "dos"
+  token = "test123"
 }
 
 resource "appd_app" "brewery" {
-  items {
-    coffee {
-      id = 3
-    }
-    quantity = 2
-  }
-  items {
-    coffee {
-      id = 2
-    }
-    quantity = 2
-  }
+  name = "brewery"
+  description = "test"
 }
 
 output "new_app" {
