@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 	"net/http"
 	"io/ioutil"
 
@@ -31,6 +32,11 @@ func resourceApplication() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: false,
+			},
+			"version": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
 			},
 		},
 	}
@@ -64,8 +70,6 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	fmt.Println(res)
 	fmt.Println(string(body))
 
-	d.SetId("1111")
-
 	resourceApplicationRead(ctx, d, m)
 
 	return diags
@@ -97,13 +101,39 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 	fmt.Println(string(body))
 
 	d.SetId("1111")
+	d.Set("version", "1")
 
 	return diags
 }
 
 func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 
-	//orderID := d.Id()
+	//appID := d.Id()
+
+	provider_data := m.(map[string]string)
+  base_url := provider_data["base_url"]
+	token := provider_data["token"]
+
+  url := base_url + "/controller/restui/allApplications/updateApplicationDetails"
+	bearer := "Bearer " + token
+
+  payload := strings.NewReader("{\n\t\"id\":7558,\n\t\"version\":6,\n\t\"name\":\"apitest7\",\n\t\"description\":\"\",\n\t\"active\":true,\n\t\"running\":false,\n\t\"eumAppName\":null\n}")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+  req.Header.Add("Authorization", bearer)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("cache-control", "no-cache")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+	d.Set("last_updated", time.Now().Format(time.RFC850))
 
 	return resourceApplicationRead(ctx, d, m)
 }
@@ -113,10 +143,29 @@ func resourceApplicationDelete(ctx context.Context, d *schema.ResourceData, m in
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	//orderID := d.Id()
+	provider_data := m.(map[string]string)
+  base_url := provider_data["base_url"]
+	token := provider_data["token"]
 
-	// d.SetId("") is automatically called assuming delete returns no errors, but
-	// it is added here for explicitness.
+  url := base_url + "/controller/restui/allApplications/deleteApplication"
+	bearer := "Bearer " + token
+
+  payload := strings.NewReader(d.Id())
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("Authorization", bearer)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("cache-control", "no-cache")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
 	d.SetId("")
 
 	return diags
