@@ -1,20 +1,20 @@
 ---
-page_title: "order Resource - terraform-provider-hashicups"
+page_title: "application Resource - terraform-provider-appdynamics"
 subcategory: ""
 description: |-
-  The order resource allows you to configure a HashiCups order.
+  The order resource allows you to configure an AppDynamics application.
 ---
 
-# Resource `hashicups_order`
+# Resource `appdynamics_application`
 
 -> Visit the [Perform CRUD operations with Providers](https://learn.hashicorp.com/tutorials/terraform/provider-use?in=terraform/providers&utm_source=WEBSITE&utm_medium=WEB_IO&utm_offer=ARTICLE_PAGE&utm_content=DOCS) Learn tutorial for an interactive getting started experience.
 
-The order resource allows you to configure a HashiCups order.
+The application resource allows you to configure an AppDynamics application.
 
 ## Example Usage
 
 ```terraform
-resource "hashicups_order" "edu" {
+resource "appdynamics_application" "edu" {
   items {
     coffee {
       id = 3

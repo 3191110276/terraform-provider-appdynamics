@@ -25,7 +25,7 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"hashicups_order": resourceApplication(),
+			"appdynamics_application": resourceApplication(),
 		},
 		ConfigureContextFunc: providerConfigure,
 	}

@@ -30,3 +30,6 @@ override.tf.json
 
 # Ignore Terraform lock files
 **.terraform.lock.hcl
+
+# Ignore built file
+/terraform-provider-appdynamics
