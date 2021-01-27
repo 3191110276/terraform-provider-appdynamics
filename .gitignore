@@ -33,3 +33,6 @@ override.tf.json
 
 # Ignore built file
 /terraform-provider-appdynamics
+
+# Temporarily disabled
+/examples/example1.tf
