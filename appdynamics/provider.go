@@ -32,11 +32,6 @@ func Provider() *schema.Provider {
 		ResourcesMap: map[string]*schema.Resource{
 			"hashicups_order": resourceOrder(),
 		},
-		DataSourcesMap: map[string]*schema.Resource{
-			"hashicups_coffees":     dataSourceCoffees(),
-			"hashicups_ingredients": dataSourceIngredients(),
-			"hashicups_order":       dataSourceOrder(),
-		},
 		ConfigureContextFunc: providerConfigure,
 	}
 }
@@ -61,8 +56,8 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		if err != nil {
 			diags = append(diags, diag.Diagnostic{
 				Severity: diag.Error,
-				Summary:  "Unable to create HashiCups client",
-				Detail:   "Unable to authenticate user for authenticated HashiCups client",
+				Summary:  "Unable to create AppDynamics client",
+				Detail:   "Unable to authenticate user for authenticated AppDynamics client",
 			})
 
 			return nil, diags
@@ -75,8 +70,8 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 	if err != nil {
 		diags = append(diags, diag.Diagnostic{
 			Severity: diag.Error,
-			Summary:  "Unable to create HashiCups client",
-			Detail:   "Unable to create anonymous HashiCups client",
+			Summary:  "Unable to create AppDynamics client",
+			Detail:   "Unable to create anonymous AppDynamics client",
 		})
 		return nil, diags
 	}

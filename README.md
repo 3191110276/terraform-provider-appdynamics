@@ -1,1 +1,1 @@
-# terraform-provider-appdynamics
+# AppDynamics Terraform Provider
