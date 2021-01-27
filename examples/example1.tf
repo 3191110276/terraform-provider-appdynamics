@@ -13,7 +13,7 @@ provider "appdynamics" {
 }
 
 resource "appdynamics_application" "brewery" {
-  name = "brewery"
+  name = "tfbrewery"
   description = "test"
 }
 

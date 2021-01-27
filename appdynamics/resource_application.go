@@ -38,8 +38,12 @@ func resourceApplication() *schema.Resource {
 
 func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 
-	url := ctx.Get("base_url").(string) + "/controller/restui/allApplications/createApplication?applicationType=APM%0A"
-	bearer := "Bearer " + ctx.Get("token").(string)
+  provider_data := m.(map[string]string)
+  base_url := provider_data["base_url"]
+	token := provider_data["token"]
+
+	url := base_url + "/controller/restui/allApplications/createApplication?applicationType=APM%0A"
+	bearer := "Bearer " + token
 
 	payload := strings.NewReader("{\"name\": \"apitest\", \"description\": \"\"}")
 
@@ -59,8 +63,6 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
-
-	//items := d.Get("items").([]interface{})
 
 	resourceApplicationRead(ctx, d, m)
 
