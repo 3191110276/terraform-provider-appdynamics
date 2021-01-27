@@ -2,6 +2,10 @@ package appdynamics
 
 import (
 	"context"
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -21,48 +25,37 @@ func resourceApplication() *schema.Resource {
 			},
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Optional: false,
-				Computed: false,
+				Required: true,
 			},
 			"description": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: false,
 			},
-			// "items": &schema.Schema{
-			// 	Type:     schema.TypeList,
-			// 	Required: true,
-			// 	Elem: &schema.Resource{
-			// 		Schema: map[string]*schema.Schema{
-			// 			"coffee": &schema.Schema{
-			// 				Type:     schema.TypeList,
-			// 				MaxItems: 1,
-			// 				Required: true,
-			// 				Elem: &schema.Resource{
-			// 					Schema: map[string]*schema.Schema{
-			// 						"id": &schema.Schema{
-			// 							Type:     schema.TypeInt,
-			// 							Required: true,
-			// 						},
-			// 						"name": &schema.Schema{
-			// 							Type:     schema.TypeString,
-			// 							Computed: true,
-			// 						},
-			// 						"description": &schema.Schema{
-			// 							Type:     schema.TypeString,
-			// 							Computed: true,
-			// 						},
-			// 					},
-			// 				},
-			// 			},
-			// 		},
-			// 	},
-			// },
 		},
 	}
 }
 
 func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+
+	url := d.Get("base_url").(string) + "/controller/restui/allApplications/createApplication?applicationType=APM%0A"
+	bearer := "Bearer " + d.Get("token").(string)
+
+	payload := strings.NewReader("{\"name\": \"apitest\", \"description\": \"\"}")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("Authorization", bearer)
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("cache-control", "no-cache")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
