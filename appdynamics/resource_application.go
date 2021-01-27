@@ -62,7 +62,7 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
   base_url := provider_data["base_url"]
 	token := provider_data["token"]
 
-	url := base_url + "/controller/restui/allApplications/createApplication?applicationType=APM%0A"
+	url := base_url + "/controller/restui/allApplications/createApplication?applicationType=APM"
 	bearer := "Bearer " + token
 
 	payload := strings.NewReader("{\"name\": \"tftesting1234\", \"description\": \"\"}")
@@ -77,9 +77,6 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
 
 	d.Set("debuga", res)
 	d.Set("debugb", string(body))
