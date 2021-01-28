@@ -84,7 +84,8 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	req_string = strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1)
   d.Set("debuga", req_string)
 
-	payload := strings.NewReader("{\"name\": \"tftesting1234\", \"description\": \"\"}")
+	//payload := strings.NewReader("{\"name\": \"tftesting1234\", \"description\": \"\"}")
+  payload := strings.NewReader(req_string)
 
 	req, _ := http.NewRequest("POST", url, payload)
 
