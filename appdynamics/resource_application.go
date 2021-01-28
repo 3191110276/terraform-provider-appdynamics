@@ -122,8 +122,8 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
   d.Set("debuga", "out")
 
 	for i := 0; i < len(data); i++ {
-		//if (data[i].Name == d.Get("name").(string)) {
-		if (data[i].Name == data[i].Name) {
+		if (data[i].Name == d.Get("name").(string)) {
+		//if (data[i].Name == data[i].Name) {
 			d.Set("debuga", "in")
 			d.SetId(string(data[i].ID))
 		}
