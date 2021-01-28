@@ -139,15 +139,16 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
   url := base_url + "/controller/restui/allApplications/updateApplicationDetails"
 	bearer := "Bearer " + token
 
-  req_string := "{\n\t\"id\":ID,\n\t\"version\":VERSION,\n\t\"name\":\"APPNAME\",\n\t\"description\":\"DESCRIPTION\"}"
-  req_string = strings.Replace(req_string, "ID", d.Id(), 1)
-	req_string = strings.Replace(req_string, "VERSION", string(d.Get("version").(int)), 1)
-	req_string = strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1)
-	req_string = strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1)
+  //req_string := "{\n\t\"id\":ID,\n\t\"version\":VERSION,\n\t\"name\":\"APPNAME\",\n\t\"description\":\"DESCRIPTION\"}"
+  //req_string = strings.Replace(req_string, "ID", d.Id(), 1)
+	//req_string = strings.Replace(req_string, "VERSION", string(d.Get("version").(int)), 1)
+	//req_string = strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1)
+	//req_string = strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1)
 
   //payload := strings.NewReader(req_string)
 
-	payload := strings.NewReader("{\n\t\"id\":7614,\n\t\"version\":1,\n\t\"name\":\"apitesttf2\",\"description\":\"test1\"\n\t\n}")
+  req_string := "{\n\t\"id\":7614,\n\t\"version\":2,\n\t\"name\":\"apitesttf3\",\"description\":\"test1\"\n\t\n}"
+	payload := strings.NewReader(req_string)
 
 	req, _ := http.NewRequest("POST", url, payload)
 
