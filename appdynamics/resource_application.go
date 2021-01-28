@@ -132,8 +132,6 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 
 func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 
-	//appID := d.Id()
-
 	provider_data := m.(map[string]string)
   base_url := provider_data["base_url"]
 	token := provider_data["token"]
@@ -141,11 +139,11 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
   url := base_url + "/controller/restui/allApplications/updateApplicationDetails"
 	bearer := "Bearer " + token
 
-  req_string := "{\n\t\"id\":ID,\n\t\"version\":2,\n\t\"name\":\"APPNAME\",\n\t\"description\":\"\"}"
+  req_string := "{\n\t\"id\":ID,\n\t\"version\":2,\n\t\"name\":\"APPNAME\",\n\t\"description\":\"DESCRIPTION\"}"
   req_string = strings.Replace(req_string, "ID", d.Id(), 1)
   //VERSION
 	req_string = strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1)
-	//DESCRIPTION
+	req_string = strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1)
 	d.Set("debuga", req_string)
 
   payload := strings.NewReader(req_string)
@@ -163,6 +161,8 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
 
 	fmt.Println(res)
 	fmt.Println(string(body))
+
+	d.Set("debugb", string(body))
 
 	d.Set("last_updated", time.Now().Format(time.RFC850))
 
