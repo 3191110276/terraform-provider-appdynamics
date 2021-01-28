@@ -7,7 +7,7 @@ import (
 	"time"
 	"net/http"
 	"io/ioutil"
-	//"encoding/json"
+	"encoding/json"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -105,10 +105,23 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 
-	fmt.Println(res)
-	fmt.Println(string(body))
+	type Entries []struct {
+		Name        string `json:"name"`
+		Description string `json:"description"`
+		ID          int    `json:"id"`
+		AccountGUID string `json:"accountGuid"`
+	}
 
-  d.Set("debuga", res)
+	data := Entries{}
+	_ = json.Unmarshal([]byte(body), &data)
+
+	for i := 0; i < len(data); i++ {
+		if (data[i].Name == d.Get("name")) {
+			d.Set("debuga", data[i].ID)
+			fmt.Println("ID: ", data[i].ID)
+		}
+	}
+
 	d.Set("debugb", string(body))
 
 	d.SetId("1111")
