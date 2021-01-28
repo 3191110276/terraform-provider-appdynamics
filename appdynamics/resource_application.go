@@ -123,7 +123,8 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 		if (data[i].Name == d.Get("name").(string)) {
 			d.Set("debuga", "in")
 			d.Set("debugb", data[i])
-			d.SetId(string(data[i].ID))
+			d.SetId(fmt.Sprint(data[i].ID))
+			//string(data[i].ID))
 		}
 	}
 

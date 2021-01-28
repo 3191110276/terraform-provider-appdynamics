@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     appdynamics = {
-      version = "0.0.24"
+      version = "0.0.25"
       source = "3191110276/appdynamics"
     }
   }
