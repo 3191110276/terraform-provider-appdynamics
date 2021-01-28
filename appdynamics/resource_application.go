@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
+	"log"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -116,9 +117,11 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 	_ = json.Unmarshal([]byte(body), &data)
 
 	for i := 0; i < len(data); i++ {
-		if (data[i].Name == d.Get("name")) {
+		log.Printf(data[i].Name)
+		log.Printf(d.Get("name").(string))
+		log.Printf("--------------")
+		if (data[i].Name == d.Get("name").(string)) {
 			d.Set("debuga", data[i].ID)
-			fmt.Println("ID: ", data[i].ID)
 		}
 	}
 
