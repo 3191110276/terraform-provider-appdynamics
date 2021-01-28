@@ -141,7 +141,7 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
 
   req_string := "{\n\t\"id\":ID,\n\t\"version\":VERSION,\n\t\"name\":\"APPNAME\",\n\t\"description\":\"DESCRIPTION\"}"
   req_string = strings.Replace(req_string, "ID", d.Id(), 1)
-	req_string = strings.Replace(req_string, "VERSION", d.Get("version").(string), 1)
+	req_string = strings.Replace(req_string, "VERSION", string(d.Get("version").(int)), 1)
 	req_string = strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1)
 	req_string = strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1)
 
