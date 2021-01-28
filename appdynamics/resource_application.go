@@ -147,9 +147,9 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
 
   //payload := strings.NewReader(req_string)
 
-  req_string := "{\n\t\"id\":7614,\n\t\"version\":4,\n\t\"name\":\"APPNAME\",\"description\":\"DESCRIPTION\"\n\t\n}"
-  // ID
-	// VERSION
+  req_string := "{\n\t\"id\":APPID,\n\t\"version\":4,\n\t\"name\":\"APPNAME\",\"description\":\"DESCRIPTION\"\n\t\n}"
+  req_string = strings.Replace(req_string, "APPID", "7614", 1)
+	//req_string = strings.Replace(req_string, "APPVERSION", "4", 1)
 	req_string = strings.Replace(req_string, "APPNAME", "apitesttf5", 1)
 	req_string = strings.Replace(req_string, "DESCRIPTION", "test5", 1)
 
