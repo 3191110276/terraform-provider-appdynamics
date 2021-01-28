@@ -110,7 +110,7 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 	type Entries []struct {
 		Name        string `json:"name"`
 		Description string `json:"description"`
-		ID          int    `json:"id"`
+		ID          string `json:"id"`
 		AccountGUID string `json:"accountGuid"`
 	}
 
