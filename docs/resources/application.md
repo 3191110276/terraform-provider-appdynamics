@@ -10,44 +10,14 @@ description: |-
 ## Example Usage
 
 ```terraform
-resource "appdynamics_application" "edu" {
-  items {
-    coffee {
-      id = 3
-    }
-    quantity = 2
-  }
-  items {
-    coffee {
-      id = 2
-    }
-    quantity = 2
-  }
+resource "appdynamics_application" "example" {
+  name = "appname"
+  description = "appdescription"
 }
 ```
 
 ## Argument Reference
 
-- `items` - (Required) Items in a HashiCups order. See [Order item](#order-item) below for details.
+- `name` - (Required) Name of the application in AppDynamics
 
-### Order item
-
-Each order item contains a `coffee` object and a `quantity`.
-
-- `coffee` - (Required) Represents a HashiCups coffee object. See [Coffee](#coffee) below for details.
-- `quantity` - (Required) The number of coffee in an order item.
-
-### Coffee
-
-- `id` - (Required) The HashiCups coffee ID.
-
-## Attributes Reference
-
-In addition to all the arguments above, the following attributes are exported.
-
-### Coffee
-
-- `image` - The coffee's image URL path.
-- `name` - The coffee name.
-- `price` - The coffee price.
-- `teaser` - The coffee teaser.
+- `description` - (Optional) Description of the application in AppDynamics

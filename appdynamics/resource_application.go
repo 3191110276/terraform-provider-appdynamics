@@ -91,8 +91,6 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 
 func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 
-  d.Set("debuga", "read triggered")
-
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
@@ -134,11 +132,6 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 
 func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 
-	// Warning or errors can be collected in a slice type
-	var diags diag.Diagnostics
-
-  d.Set("debugb", "update triggered")
-
 	provider_data := m.(map[string]string)
   base_url := provider_data["base_url"]
 	token := provider_data["token"]
@@ -146,12 +139,11 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
   url := base_url + "/controller/restui/allApplications/updateApplicationDetails"
 	bearer := "Bearer " + token
 
-  req_string := "{\n\t\"id\":ID,\n\t\"version\":2,\n\t\"name\":\"APPNAME\",\n\t\"description\":\"DESCRIPTION\"}"
+  req_string := "{\n\t\"id\":ID,\n\t\"version\":VERSION,\n\t\"name\":\"APPNAME\",\n\t\"description\":\"DESCRIPTION\"}"
   req_string = strings.Replace(req_string, "ID", d.Id(), 1)
-  //VERSION
+	req_string = strings.Replace(req_string, "VERSION", d.Get("version").(string), 1)
 	req_string = strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1)
 	req_string = strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1)
-	d.Set("debuga", req_string)
 
   payload := strings.NewReader(req_string)
 
@@ -164,17 +156,13 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
 	res, _ := http.DefaultClient.Do(req)
 
 	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
+	//body, _ := ioutil.ReadAll(res.Body)
 
-	d.Set("debugb", string(body))
+	d.Set("version", d.Get("version").(int)+1)
 
 	d.Set("last_updated", time.Now().Format(time.RFC850))
 
-	//return resourceApplicationRead(ctx, d, m)
-
-	resourceApplicationRead(ctx, d, m)
-
-	return diags
+	return resourceApplicationRead(ctx, d, m)
 }
 
 func resourceApplicationDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
