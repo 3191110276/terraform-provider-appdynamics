@@ -65,21 +65,25 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	url := base_url + "/controller/restui/allApplications/createApplication?applicationType=APM"
 	bearer := "Bearer " + token
 
-	type req_template struct {
-    name        string
-    description string
-  }
+	//type req_template struct {
+  //  name        string
+  //  description string
+  //}
 
-	req_go := &req_template{
-			name:   "tftesting1234",
-			description: "abcd",
-	}
+	//req_go := &req_template{
+	//		name:   "tftesting1234",
+	//		description: "abcd",
+	//}
 
-	req_json, _ := json.Marshal(req_go)
-	d.Set("debuga", string(req_json))
+	//req_json, _ := json.Marshal(req_go)
+	//d.Set("debuga", string(req_json))
 	//payload := strings.NewReader(string(req_json))
 
-	payload := strings.NewReader("{\"name\": \"tftesting1234\", \"description\": \"\"}")
+	req_string := "{\"name\": \"APPNAME\", \"description\": \"DESCRIPTION\"}"
+  d.Set("debuga", strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1))
+	d.Set("debugb", strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1))
+
+	payload := strings.NewReader(req_string)
 
 	req, _ := http.NewRequest("POST", url, payload)
 
