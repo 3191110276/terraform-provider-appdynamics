@@ -117,22 +117,16 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 	data := Entries{}
 	_ = json.Unmarshal([]byte(body), &data)
 
-  debugx := ""
-
 	d.SetId("1111")
 
 	for i := 0; i < len(data); i++ {
-		debugx += data[i].Name
-		debugx += " // "
 		//if (data[i].Name == d.Get("name").(string)) {
 		if (data[i].Name == "tftesting1234") {
 			d.Set("debuga", string(data[i].ID))
+			d.Set("debugb", data[i])
 			d.SetId(string(data[i].ID))
 		}
 	}
-
-  d.Set("debuga", debugx)
-	d.Set("debugb", d.Get("name").(string))
 
 	return diags
 }
