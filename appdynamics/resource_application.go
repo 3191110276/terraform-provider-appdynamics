@@ -65,7 +65,20 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	url := base_url + "/controller/restui/allApplications/createApplication?applicationType=APM"
 	bearer := "Bearer " + token
 
-	payload := strings.NewReader("{\"name\": \"tftesting1234\", \"description\": \"\"}")
+	type req_template struct {
+    name        string
+    description string
+  }
+
+	req_go := &req_template{
+			name:   "tftesting1234",
+			description: "abcd",
+	}
+
+	req_json, _ := json.Marshal(req_go)
+	payload := strings.NewReader(string(req_json))
+
+	//payload := strings.NewReader("{\"name\": \"tftesting1234\", \"description\": \"\"}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -117,14 +130,9 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 	data := Entries{}
 	_ = json.Unmarshal([]byte(body), &data)
 
-  d.Set("debuga", "out")
-
 	for i := 0; i < len(data); i++ {
 		if (data[i].Name == d.Get("name").(string)) {
-			d.Set("debuga", "in")
-			d.Set("debugb", data[i])
 			d.SetId(fmt.Sprint(data[i].ID))
-			//string(data[i].ID))
 		}
 	}
 
