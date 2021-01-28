@@ -76,7 +76,7 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	res, _ := http.DefaultClient.Do(req)
 
 	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
+	//body, _ := ioutil.ReadAll(res.Body)
 
 	resourceApplicationRead(ctx, d, m)
 
