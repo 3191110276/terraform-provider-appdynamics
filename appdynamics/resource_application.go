@@ -110,7 +110,7 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 	type Entries []struct {
 		Name        string `json:"name"`
 		Description string `json:"description"`
-		ID          string    `json:"id"`
+		ID          int    `json:"id"`
 		AccountGUID string `json:"accountGuid"`
 	}
 
@@ -119,11 +119,12 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 
 	d.SetId("1111")
 
+  d.Set("debuga", "out")
+
 	for i := 0; i < len(data); i++ {
 		//if (data[i].Name == d.Get("name").(string)) {
-		if (data[i].Name == "tftesting1234") {
-			d.Set("debuga", string(data[i].ID))
-			d.Set("debugb", data[i].Name)
+		if (data[i].Name == data[i].Name) {
+			d.Set("debuga", "in")
 			d.SetId(string(data[i].ID))
 		}
 	}
