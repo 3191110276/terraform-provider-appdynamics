@@ -91,6 +91,8 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 
 func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 
+  d.Set("debuga", "read triggered")
+
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
@@ -132,6 +134,8 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 
 func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 
+  d.Set("debugb", "update triggered")
+
 	provider_data := m.(map[string]string)
   base_url := provider_data["base_url"]
 	token := provider_data["token"]
@@ -158,9 +162,6 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
 
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
 
 	d.Set("debugb", string(body))
 
