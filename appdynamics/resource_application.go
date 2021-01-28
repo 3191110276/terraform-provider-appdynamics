@@ -76,9 +76,10 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	}
 
 	req_json, _ := json.Marshal(req_go)
-	payload := strings.NewReader(string(req_json))
+	d.Set("debuga", string(req_json))
+	//payload := strings.NewReader(string(req_json))
 
-	//payload := strings.NewReader("{\"name\": \"tftesting1234\", \"description\": \"\"}")
+	payload := strings.NewReader("{\"name\": \"tftesting1234\", \"description\": \"\"}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
