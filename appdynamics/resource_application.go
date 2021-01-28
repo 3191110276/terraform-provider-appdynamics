@@ -139,19 +139,16 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
   url := base_url + "/controller/restui/allApplications/updateApplicationDetails"
 	bearer := "Bearer " + token
 
-  //req_string := "{\n\t\"id\":ID,\n\t\"version\":VERSION,\n\t\"name\":\"APPNAME\",\n\t\"description\":\"DESCRIPTION\"}"
   //req_string = strings.Replace(req_string, "ID", d.Id(), 1)
 	//req_string = strings.Replace(req_string, "VERSION", string(d.Get("version").(int)), 1)
 	//req_string = strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1)
 	//req_string = strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1)
 
-  //payload := strings.NewReader(req_string)
-
   req_string := "{\n\t\"id\":APPID,\n\t\"version\":APPVERSION,\n\t\"name\":\"APPNAME\",\"description\":\"DESCRIPTION\"\n\t\n}"
   req_string = strings.Replace(req_string, "APPID", "7614", 1)
-	req_string = strings.Replace(req_string, "APPVERSION", "6", 1)
-	req_string = strings.Replace(req_string, "APPNAME", "apitesttf7", 1)
-	req_string = strings.Replace(req_string, "DESCRIPTION", "test7", 1)
+	req_string = strings.Replace(req_string, "APPVERSION", "7", 1)
+	req_string = strings.Replace(req_string, "APPNAME", "apitesttf8", 1)
+	req_string = strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1)
 
 	payload := strings.NewReader(req_string)
 
