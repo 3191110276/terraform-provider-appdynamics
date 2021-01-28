@@ -78,9 +78,6 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 
-	d.Set("debuga", res)
-	d.Set("debugb", string(body))
-
 	resourceApplicationRead(ctx, d, m)
 
 	return diags
@@ -111,8 +108,8 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 	fmt.Println(res)
 	fmt.Println(string(body))
 
-  //d.Set("debuga", res)
-	//d.Set("debugb", string(body))
+  d.Set("debuga", res)
+	d.Set("debugb", string(body))
 
 	d.SetId("1111")
 	d.Set("version", "1")
