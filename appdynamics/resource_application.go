@@ -78,6 +78,8 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	defer res.Body.Close()
 	//body, _ := ioutil.ReadAll(res.Body)
 
+	d.Set("version", "1")
+
 	resourceApplicationRead(ctx, d, m)
 
 	return diags
@@ -117,19 +119,20 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 
   debugx := ""
 
+	d.SetId("1111")
+
 	for i := 0; i < len(data); i++ {
 		debugx += data[i].Name
 		debugx += " // "
-		if (data[i].Name == d.Get("name").(string)) {
+		//if (data[i].Name == d.Get("name").(string)) {
+		if (data[i].Name == "tftesting1234") {
 			d.Set("debuga", data[i].ID)
+			d.SetId(data[i].ID)
 		}
 	}
 
   d.Set("debuga", debugx)
 	d.Set("debugb", d.Get("name").(string))
-
-	d.SetId("1111")
-	d.Set("version", "1")
 
 	return diags
 }
