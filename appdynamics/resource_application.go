@@ -35,7 +35,7 @@ func resourceApplication() *schema.Resource {
 				Computed: false,
 			},
 			"version": &schema.Schema{
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Optional: true,
 				Computed: true,
 			},
@@ -65,26 +65,10 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	url := base_url + "/controller/restui/allApplications/createApplication?applicationType=APM"
 	bearer := "Bearer " + token
 
-	//type req_template struct {
-  //  name        string
-  //  description string
-  //}
-
-	//req_go := &req_template{
-	//		name:   "tftesting1234",
-	//		description: "abcd",
-	//}
-
-	//req_json, _ := json.Marshal(req_go)
-	//d.Set("debuga", string(req_json))
-	//payload := strings.NewReader(string(req_json))
-
 	req_string := "{\"name\": \"APPNAME\", \"description\": \"DESCRIPTION\"}"
   req_string = strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1)
 	req_string = strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1)
-  d.Set("debuga", req_string)
 
-	//payload := strings.NewReader("{\"name\": \"tftesting1234\", \"description\": \"\"}")
   payload := strings.NewReader(req_string)
 
 	req, _ := http.NewRequest("POST", url, payload)
@@ -98,7 +82,7 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	defer res.Body.Close()
 	//body, _ := ioutil.ReadAll(res.Body)
 
-	d.Set("version", "1")
+	d.Set("version", 1)
 
 	resourceApplicationRead(ctx, d, m)
 
@@ -157,7 +141,14 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
   url := base_url + "/controller/restui/allApplications/updateApplicationDetails"
 	bearer := "Bearer " + token
 
-  payload := strings.NewReader("{\n\t\"id\":7558,\n\t\"version\":6,\n\t\"name\":\"apitest7\",\n\t\"description\":\"\",\n\t\"active\":true,\n\t\"running\":false,\n\t\"eumAppName\":null\n}")
+  req_string := "{\n\t\"id\":ID,\n\t\"version\":2,\n\t\"name\":\"APPNAME\",\n\t\"description\":\"\"}"
+  req_string = strings.Replace(req_string, "ID", d.Id(), 1)
+  //VERSION
+	req_string = strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1)
+	//DESCRIPTION
+	d.Set("debuga", req_string)
+
+  payload := strings.NewReader(req_string)
 
 	req, _ := http.NewRequest("POST", url, payload)
 
