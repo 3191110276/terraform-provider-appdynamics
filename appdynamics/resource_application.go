@@ -80,8 +80,8 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	//payload := strings.NewReader(string(req_json))
 
 	req_string := "{\"name\": \"APPNAME\", \"description\": \"DESCRIPTION\"}"
-  d.Set("debuga", strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1))
-	d.Set("debugb", strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1))
+  //d.Set("debuga", strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1))
+	//d.Set("debugb", strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1))
 
 	payload := strings.NewReader(req_string)
 
