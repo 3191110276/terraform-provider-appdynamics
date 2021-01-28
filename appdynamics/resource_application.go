@@ -134,6 +134,9 @@ func resourceApplicationRead(ctx context.Context, d *schema.ResourceData, m inte
 
 func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 
+	// Warning or errors can be collected in a slice type
+	var diags diag.Diagnostics
+
   d.Set("debugb", "update triggered")
 
 	provider_data := m.(map[string]string)
@@ -167,7 +170,11 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
 
 	d.Set("last_updated", time.Now().Format(time.RFC850))
 
-	return resourceApplicationRead(ctx, d, m)
+	//return resourceApplicationRead(ctx, d, m)
+
+	resourceApplicationRead(ctx, d, m)
+
+	return diags
 }
 
 func resourceApplicationDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {

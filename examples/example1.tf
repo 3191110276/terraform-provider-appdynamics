@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     appdynamics = {
-      version = "0.0.34"
+      version = "0.0.35"
       source = "3191110276/appdynamics"
     }
   }
@@ -14,7 +14,7 @@ provider "appdynamics" {
 
 resource "appdynamics_application" "brewery" {
   name = "tftesting123456"
-  description = "test"
+  description = "test1"
 }
 
 output "new_app" {

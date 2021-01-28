@@ -7,10 +7,6 @@ description: |-
 
 # Resource `appdynamics_application`
 
--> Visit the [Perform CRUD operations with Providers](https://learn.hashicorp.com/tutorials/terraform/provider-use?in=terraform/providers&utm_source=WEBSITE&utm_medium=WEB_IO&utm_offer=ARTICLE_PAGE&utm_content=DOCS) Learn tutorial for an interactive getting started experience.
-
-The application resource allows you to configure an AppDynamics application.
-
 ## Example Usage
 
 ```terraform
