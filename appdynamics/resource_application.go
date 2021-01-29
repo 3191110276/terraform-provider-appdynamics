@@ -139,14 +139,9 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
   url := base_url + "/controller/restui/allApplications/updateApplicationDetails"
 	bearer := "Bearer " + token
 
-  //req_string = strings.Replace(req_string, "ID", d.Id(), 1)
-	//req_string = strings.Replace(req_string, "VERSION", string(d.Get("version").(int)), 1)
-	//req_string = strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1)
-	//req_string = strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1)
-
   req_string := "{\n\t\"id\":APPID,\n\t\"version\":APPVERSION,\n\t\"name\":\"APPNAME\",\"description\":\"DESCRIPTION\"\n\t\n}"
   req_string = strings.Replace(req_string, "APPID", d.Id(), 1)
-	req_string = strings.Replace(req_string, "APPVERSION", "1", 1)
+	req_string = strings.Replace(req_string, "APPVERSION", string(d.Get("version").(int)), 1)
 	req_string = strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1)
 	req_string = strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1)
 
