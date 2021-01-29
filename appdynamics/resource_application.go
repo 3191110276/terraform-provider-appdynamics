@@ -154,7 +154,7 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
 		return diag.FromErr(err)
 	}
 	new_version := current_version + 1
-	new_version_string := string(new_version)
+	new_version_string := fmt.Sprint(new_version)
 	d.Set("version", new_version_string)
 
 	d.Set("last_updated", time.Now().Format(time.RFC850))
