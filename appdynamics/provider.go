@@ -25,7 +25,8 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"appdynamics_application": resourceApplication(),
+			"appdynamics_apm_application": resourceAPMApplication(),
+			"appdynamics_eum_application": resourceEUMApplication(),
 		},
 		ConfigureContextFunc: providerConfigure,
 	}

@@ -5,12 +5,12 @@ description: |-
   The order resource allows you to configure an AppDynamics application.
 ---
 
-# Resource `appdynamics_application`
+# Resource `appdynamics_apm_application`
 
 ## Example Usage
 
 ```terraform
-resource "appdynamics_application" "example" {
+resource "appdynamics_apm_application" "example" {
   name = "appname"
   description = "appdescription"
 }
