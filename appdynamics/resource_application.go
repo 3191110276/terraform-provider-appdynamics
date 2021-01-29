@@ -149,12 +149,13 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
 	defer res.Body.Close()
 	//body, _ := ioutil.ReadAll(res.Body)
 
-	current_version, err := strconv.ParseInt(d.Get("version").(string), 0, 64)
+	current_version, err := strconv.ParseInt(d.Get("version").(string), 10, 64)
 	if err != nil {
 		return diag.FromErr(err)
 	}
 	new_version := current_version + 1
-	d.Set("version", string(new_version))
+	new_version_string := string(new_version)
+	d.Set("version", new_version_string)
 
 	d.Set("last_updated", time.Now().Format(time.RFC850))
 
