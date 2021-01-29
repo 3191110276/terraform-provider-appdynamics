@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
+	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -35,16 +36,6 @@ func resourceApplication() *schema.Resource {
 				Computed: false,
 			},
 			"version": &schema.Schema{
-				Type:     schema.TypeInt,
-				Optional: true,
-				Computed: true,
-			},
-			"debuga": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-			},
-			"debugb": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
@@ -82,7 +73,7 @@ func resourceApplicationCreate(ctx context.Context, d *schema.ResourceData, m in
 	defer res.Body.Close()
 	//body, _ := ioutil.ReadAll(res.Body)
 
-	d.Set("version", 1)
+	d.Set("version", "1")
 
 	resourceApplicationRead(ctx, d, m)
 
@@ -141,7 +132,7 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
 
   req_string := "{\n\t\"id\":APPID,\n\t\"version\":APPVERSION,\n\t\"name\":\"APPNAME\",\"description\":\"DESCRIPTION\"\n\t\n}"
   req_string = strings.Replace(req_string, "APPID", d.Id(), 1)
-	req_string = strings.Replace(req_string, "APPVERSION", string(d.Get("version").(int)), 1)
+	req_string = strings.Replace(req_string, "APPVERSION", d.Get("version").(string), 1)
 	req_string = strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1)
 	req_string = strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1)
 
@@ -158,7 +149,12 @@ func resourceApplicationUpdate(ctx context.Context, d *schema.ResourceData, m in
 	defer res.Body.Close()
 	//body, _ := ioutil.ReadAll(res.Body)
 
-	d.Set("version", d.Get("version").(int)+1)
+	current_version, err := strconv.ParseInt(d.Get("version").(string), 0, 64)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	new_version := current_version + 1
+	d.Set("version", string(new_version))
 
 	d.Set("last_updated", time.Now().Format(time.RFC850))
 
