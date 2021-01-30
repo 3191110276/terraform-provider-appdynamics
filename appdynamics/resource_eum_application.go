@@ -53,7 +53,7 @@ func resourceEUMApplicationCreate(ctx context.Context, d *schema.ResourceData, m
   base_url := provider_data["base_url"]
 	token := provider_data["token"]
 
-	url := base_url + "/controller/restui/allApplications/createApplication?applicationType=APM"
+  url := base_url + "/controller/restui/allApplications/createApplication?applicationType=WEB"
 	bearer := "Bearer " + token
 
 	req_string := "{\"name\": \"APPNAME\", \"description\": \"DESCRIPTION\"}"
@@ -89,7 +89,7 @@ func resourceEUMApplicationRead(ctx context.Context, d *schema.ResourceData, m i
   base_url := provider_data["base_url"]
 	token := provider_data["token"]
 
-  url := base_url + "/controller/rest/applications?output=json"
+  url := base_url + "/controller/restui/eumApplications/getAllEumApplicationsData?time-range=last_1_hour.BEFORE_NOW.-1.-1.60"
 	bearer := "Bearer " + token
 
 	req, _ := http.NewRequest("GET", url, nil)
@@ -104,9 +104,8 @@ func resourceEUMApplicationRead(ctx context.Context, d *schema.ResourceData, m i
 
 	type Entries []struct {
 		Name        string `json:"name"`
-		Description string `json:"description"`
+		AppKey      string `json:"appKey"`
 		ID          int    `json:"id"`
-		AccountGUID string `json:"accountGuid"`
 	}
 
 	data := Entries{}
