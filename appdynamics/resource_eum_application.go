@@ -135,6 +135,14 @@ func resourceEUMApplicationUpdate(ctx context.Context, d *schema.ResourceData, m
   url := base_url + "/controller/restui/allApplications/updateApplicationDetails"
 	bearer := "Bearer " + token
 
+	current_version, err := strconv.ParseInt(d.Get("version").(string), 10, 64)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	new_version := current_version + 1
+	new_version_string := fmt.Sprint(new_version)
+	d.Set("version", new_version_string)
+
   req_string := "{\n\t\"id\":APPID,\n\t\"version\":APPVERSION,\n\t\"name\":\"APPNAME\",\"description\":\"DESCRIPTION\"\n\t\n}"
   req_string = strings.Replace(req_string, "APPID", d.Id(), 1)
 	req_string = strings.Replace(req_string, "APPVERSION", d.Get("version").(string), 1)
@@ -153,14 +161,6 @@ func resourceEUMApplicationUpdate(ctx context.Context, d *schema.ResourceData, m
 
 	defer res.Body.Close()
 	//body, _ := ioutil.ReadAll(res.Body)
-
-	current_version, err := strconv.ParseInt(d.Get("version").(string), 10, 64)
-	if err != nil {
-		return diag.FromErr(err)
-	}
-	new_version := current_version + 1
-	new_version_string := fmt.Sprint(new_version)
-	d.Set("version", new_version_string)
 
 	d.Set("last_updated", time.Now().Format(time.RFC850))
 
