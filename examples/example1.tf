@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     appdynamics = {
-      version = "0.0.54"
+      version = "0.0.55"
       source = "3191110276/appdynamics"
     }
   }
@@ -18,7 +18,7 @@ resource "appdynamics_apm_application" "brewery" {
 }
 
 resource "appdynamics_eum_application" "brewery" {
-  name = "tftesting12345x"
+  name = "tftesting1234x"
   description = "test"
 }
 

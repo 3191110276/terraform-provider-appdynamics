@@ -40,6 +40,11 @@ func resourceEUMApplication() *schema.Resource {
 				Optional: true,
 				Computed: true,
 			},
+			"eum_key": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
 		},
 	}
 }
@@ -114,6 +119,7 @@ func resourceEUMApplicationRead(ctx context.Context, d *schema.ResourceData, m i
 	for i := 0; i < len(data); i++ {
 		if (data[i].Name == d.Get("name").(string)) {
 			d.SetId(fmt.Sprint(data[i].ID))
+			d.Set("eum_key", data[i].AppKey)
 		}
 	}
 
