@@ -7,7 +7,7 @@ import (
 	"time"
 	"net/http"
 	"io/ioutil"
-	//"encoding/json"
+	"encoding/json"
 	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -69,21 +69,6 @@ func resourceDBCollector() *schema.Resource {
 				Optional: true,
 				Computed: true,
 			},
-			"debugc": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-			},
-			"debugd": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-			},
-			"debuge": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-			},
 		},
 	}
 }
@@ -107,11 +92,7 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 	req_string = strings.Replace(req_string, "PASSWORD", d.Get("password").(string), 1)
 	req_string = strings.Replace(req_string, "AGENT", d.Get("agent_name").(string), 1)
 
-  d.Set("debuga", req_string)
-
   payload := strings.NewReader(req_string)
-
-	d.Set("debugb", payload)
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -120,16 +101,13 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("cache-control", "no-cache")
 
-	d.Set("debugc", req)
-
-	res, _ := http.DefaultClient.Do(req)
-
-	d.Set("debugd", res)
+	res, err := http.DefaultClient.Do(req)
+  if err != nil {
+		d.Set("debuga", string(err.Error()))
+  }
 
 	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-  d.Set("debuge", body)
+	//body, _ := ioutil.ReadAll(res.Body)
 
 	resourceDBCollectorRead(ctx, d, m)
 
@@ -155,90 +133,90 @@ func resourceDBCollectorRead(ctx context.Context, d *schema.ResourceData, m inte
 	res, _ := http.DefaultClient.Do(req)
 
 	defer res.Body.Close()
-	// body, _ := ioutil.ReadAll(res.Body)
-	//
-	// type Entries []struct {
-	// 	PerformanceState interface{} `json:"performanceState"`
-	// 	CollectorStatus  string      `json:"collectorStatus"`
-	// 	EventSummary     interface{} `json:"eventSummary"`
-	// 	ConfigID         int         `json:"configId"`
-	// 	NodeID           int         `json:"nodeId"`
-	// 	Config           struct {
-	// 		ID                       int           `json:"id"`
-	// 		Version                  int           `json:"version"`
-	// 		Name                     string        `json:"name"`
-	// 		NameUnique               bool          `json:"nameUnique"`
-	// 		BuiltIn                  bool          `json:"builtIn"`
-	// 		CreatedBy                interface{}   `json:"createdBy"`
-	// 		CreatedOn                int64         `json:"createdOn"`
-	// 		ModifiedBy               interface{}   `json:"modifiedBy"`
-	// 		ModifiedOn               int64         `json:"modifiedOn"`
-	// 		Type                     string        `json:"type"`
-	// 		Hostname                 string        `json:"hostname"`
-	// 		UseWindowsAuth           bool          `json:"useWindowsAuth"`
-	// 		Username                 string        `json:"username"`
-	// 		Password                 string        `json:"password"`
-	// 		Port                     int           `json:"port"`
-	// 		LoggingEnabled           bool          `json:"loggingEnabled"`
-	// 		Enabled                  bool          `json:"enabled"`
-	// 		ExcludedSchemas          interface{}   `json:"excludedSchemas"`
-	// 		JdbcConnectionProperties []interface{} `json:"jdbcConnectionProperties"`
-	// 		DatabaseName             string        `json:"databaseName"`
-	// 		FailoverPartner          interface{}   `json:"failoverPartner"`
-	// 		ConnectAsSysdba          bool          `json:"connectAsSysdba"`
-	// 		UseServiceName           bool          `json:"useServiceName"`
-	// 		Sid                      string        `json:"sid"`
-	// 		CustomConnectionString   interface{}   `json:"customConnectionString"`
-	// 		EnterpriseDB             bool          `json:"enterpriseDB"`
-	// 		UseSSL                   bool          `json:"useSSL"`
-	// 		EnableOSMonitor          bool          `json:"enableOSMonitor"`
-	// 		HostOS                   string        `json:"hostOS"`
-	// 		UseLocalWMI              bool          `json:"useLocalWMI"`
-	// 		HostDomain               interface{}   `json:"hostDomain"`
-	// 		HostUsername             string        `json:"hostUsername"`
-	// 		HostPassword             interface{}   `json:"hostPassword"`
-	// 		DbInstanceIdentifier     interface{}   `json:"dbInstanceIdentifier"`
-	// 		Region                   interface{}   `json:"region"`
-	// 		CertificateAuth          bool          `json:"certificateAuth"`
-	// 		RemoveLiterals           bool          `json:"removeLiterals"`
-	// 		SSHPort                  int           `json:"sshPort"`
-	// 		AgentName                string        `json:"agentName"`
-	// 		DbCyberArkEnabled        bool          `json:"dbCyberArkEnabled"`
-	// 		DbCyberArkApplication    interface{}   `json:"dbCyberArkApplication"`
-	// 		DbCyberArkSafe           interface{}   `json:"dbCyberArkSafe"`
-	// 		DbCyberArkFolder         interface{}   `json:"dbCyberArkFolder"`
-	// 		DbCyberArkObject         interface{}   `json:"dbCyberArkObject"`
-	// 		HwCyberArkEnabled        bool          `json:"hwCyberArkEnabled"`
-	// 		HwCyberArkApplication    interface{}   `json:"hwCyberArkApplication"`
-	// 		HwCyberArkSafe           interface{}   `json:"hwCyberArkSafe"`
-	// 		HwCyberArkFolder         interface{}   `json:"hwCyberArkFolder"`
-	// 		HwCyberArkObject         interface{}   `json:"hwCyberArkObject"`
-	// 		OrapkiSslEnabled         bool          `json:"orapkiSslEnabled"`
-	// 		OrasslClientAuthEnabled  bool          `json:"orasslClientAuthEnabled"`
-	// 		OrasslTruststoreLoc      interface{}   `json:"orasslTruststoreLoc"`
-	// 		OrasslTruststoreType     interface{}   `json:"orasslTruststoreType"`
-	// 		OrasslTruststorePassword interface{}   `json:"orasslTruststorePassword"`
-	// 		OrasslKeystoreLoc        interface{}   `json:"orasslKeystoreLoc"`
-	// 		OrasslKeystoreType       interface{}   `json:"orasslKeystoreType"`
-	// 		OrasslKeystorePassword   interface{}   `json:"orasslKeystorePassword"`
-	// 		LdapEnabled              bool          `json:"ldapEnabled"`
-	// 		CustomMetrics            interface{}   `json:"customMetrics"`
-	// 		SubConfigs               []interface{} `json:"subConfigs"`
-	// 		JmxPort                  int           `json:"jmxPort"`
-	// 		BackendIds               []int         `json:"backendIds"`
-	// 		ExtraProperties          []interface{} `json:"extraProperties"`
-	// 	} `json:"config"`
-	// 	LicensesUsed int `json:"licensesUsed"`
-	// }
-	//
-	// data := Entries{}
-	// _ = json.Unmarshal([]byte(body), &data)
-	//
-	// for i := 0; i < len(data); i++ {
-	// 	if (data[i].Config.Name == d.Get("name").(string)) {
-	// 		d.SetId(fmt.Sprint(data[i].ConfigID))
-	// 	}
-	// }
+	body, _ := ioutil.ReadAll(res.Body)
+
+	type Entries []struct {
+		PerformanceState interface{} `json:"performanceState"`
+		CollectorStatus  string      `json:"collectorStatus"`
+		EventSummary     interface{} `json:"eventSummary"`
+		ConfigID         int         `json:"configId"`
+		NodeID           int         `json:"nodeId"`
+		Config           struct {
+			ID                       int           `json:"id"`
+			Version                  int           `json:"version"`
+			Name                     string        `json:"name"`
+			NameUnique               bool          `json:"nameUnique"`
+			BuiltIn                  bool          `json:"builtIn"`
+			CreatedBy                interface{}   `json:"createdBy"`
+			CreatedOn                int64         `json:"createdOn"`
+			ModifiedBy               interface{}   `json:"modifiedBy"`
+			ModifiedOn               int64         `json:"modifiedOn"`
+			Type                     string        `json:"type"`
+			Hostname                 string        `json:"hostname"`
+			UseWindowsAuth           bool          `json:"useWindowsAuth"`
+			Username                 string        `json:"username"`
+			Password                 string        `json:"password"`
+			Port                     int           `json:"port"`
+			LoggingEnabled           bool          `json:"loggingEnabled"`
+			Enabled                  bool          `json:"enabled"`
+			ExcludedSchemas          interface{}   `json:"excludedSchemas"`
+			JdbcConnectionProperties []interface{} `json:"jdbcConnectionProperties"`
+			DatabaseName             string        `json:"databaseName"`
+			FailoverPartner          interface{}   `json:"failoverPartner"`
+			ConnectAsSysdba          bool          `json:"connectAsSysdba"`
+			UseServiceName           bool          `json:"useServiceName"`
+			Sid                      string        `json:"sid"`
+			CustomConnectionString   interface{}   `json:"customConnectionString"`
+			EnterpriseDB             bool          `json:"enterpriseDB"`
+			UseSSL                   bool          `json:"useSSL"`
+			EnableOSMonitor          bool          `json:"enableOSMonitor"`
+			HostOS                   string        `json:"hostOS"`
+			UseLocalWMI              bool          `json:"useLocalWMI"`
+			HostDomain               interface{}   `json:"hostDomain"`
+			HostUsername             string        `json:"hostUsername"`
+			HostPassword             interface{}   `json:"hostPassword"`
+			DbInstanceIdentifier     interface{}   `json:"dbInstanceIdentifier"`
+			Region                   interface{}   `json:"region"`
+			CertificateAuth          bool          `json:"certificateAuth"`
+			RemoveLiterals           bool          `json:"removeLiterals"`
+			SSHPort                  int           `json:"sshPort"`
+			AgentName                string        `json:"agentName"`
+			DbCyberArkEnabled        bool          `json:"dbCyberArkEnabled"`
+			DbCyberArkApplication    interface{}   `json:"dbCyberArkApplication"`
+			DbCyberArkSafe           interface{}   `json:"dbCyberArkSafe"`
+			DbCyberArkFolder         interface{}   `json:"dbCyberArkFolder"`
+			DbCyberArkObject         interface{}   `json:"dbCyberArkObject"`
+			HwCyberArkEnabled        bool          `json:"hwCyberArkEnabled"`
+			HwCyberArkApplication    interface{}   `json:"hwCyberArkApplication"`
+			HwCyberArkSafe           interface{}   `json:"hwCyberArkSafe"`
+			HwCyberArkFolder         interface{}   `json:"hwCyberArkFolder"`
+			HwCyberArkObject         interface{}   `json:"hwCyberArkObject"`
+			OrapkiSslEnabled         bool          `json:"orapkiSslEnabled"`
+			OrasslClientAuthEnabled  bool          `json:"orasslClientAuthEnabled"`
+			OrasslTruststoreLoc      interface{}   `json:"orasslTruststoreLoc"`
+			OrasslTruststoreType     interface{}   `json:"orasslTruststoreType"`
+			OrasslTruststorePassword interface{}   `json:"orasslTruststorePassword"`
+			OrasslKeystoreLoc        interface{}   `json:"orasslKeystoreLoc"`
+			OrasslKeystoreType       interface{}   `json:"orasslKeystoreType"`
+			OrasslKeystorePassword   interface{}   `json:"orasslKeystorePassword"`
+			LdapEnabled              bool          `json:"ldapEnabled"`
+			CustomMetrics            interface{}   `json:"customMetrics"`
+			SubConfigs               []interface{} `json:"subConfigs"`
+			JmxPort                  int           `json:"jmxPort"`
+			BackendIds               []int         `json:"backendIds"`
+			ExtraProperties          []interface{} `json:"extraProperties"`
+		} `json:"config"`
+		LicensesUsed int `json:"licensesUsed"`
+	}
+
+	data := Entries{}
+	_ = json.Unmarshal([]byte(body), &data)
+
+	for i := 0; i < len(data); i++ {
+	if (data[i].Config.Name == d.Get("name").(string)) {
+	  d.Set("debugb", "found")
+	}
+	}
 
 	d.SetId("1")
 
