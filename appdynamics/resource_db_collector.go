@@ -104,7 +104,7 @@ func resourceDBCollectorRead(ctx context.Context, d *schema.ResourceData, m inte
 	provider_data := m.(map[string]string)
   base_url := provider_data["base_url"]
 
-  url := base_url + "/controller/restui/eumApplications/getAllEumApplicationsData?time-range=last_1_hour.BEFORE_NOW.-1.-1.60"
+  url := base_url + "/controller/rest/databases/collectors"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
