@@ -15,18 +15,27 @@ func Provider() *schema.Provider {
 			"base_url": &schema.Schema{
 				Type:        schema.TypeString,
 				Optional:    true,
-				//DefaultFunc: schema.EnvDefaultFunc("HASHICUPS_USERNAME", nil),
-		},
+		  },
 			"token": &schema.Schema{
 				Type:        schema.TypeString,
 				Optional:    true,
 				Sensitive:   true,
-				//DefaultFunc: schema.EnvDefaultFunc("HASHICUPS_PASSWORD", nil),
+			},
+			"username": &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
+				Sensitive:   true,
+			},
+			"password": &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
+				Sensitive:   true,
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"appdynamics_apm_application": resourceAPMApplication(),
 			"appdynamics_eum_application": resourceEUMApplication(),
+			"appdynamics_db_collector": resourceDBCollector(),
 		},
 		ConfigureContextFunc: providerConfigure,
 	}
