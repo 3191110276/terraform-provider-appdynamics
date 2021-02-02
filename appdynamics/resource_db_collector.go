@@ -64,6 +64,26 @@ func resourceDBCollector() *schema.Resource {
 				Optional: true,
 				Computed: true,
 			},
+			"debugb": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
+			"debugc": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
+			"debugd": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
+			"debuge": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
 		},
 	}
 }
@@ -87,7 +107,11 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 	req_string = strings.Replace(req_string, "PASSWORD", d.Get("password").(string), 1)
 	req_string = strings.Replace(req_string, "AGENT", d.Get("agent_name").(string), 1)
 
+  d.Set("debuga", req_string)
+
   payload := strings.NewReader(req_string)
+
+	d.Set("debugb", payload)
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -96,11 +120,16 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("cache-control", "no-cache")
 
+	d.Set("debugc", req)
+
 	res, _ := http.DefaultClient.Do(req)
 
+	d.Set("debugd", res)
+
 	defer res.Body.Close()
-	//body, _ := ioutil.ReadAll(res.Body)
-	d.Set("debuga", res)
+	body, _ := ioutil.ReadAll(res.Body)
+
+  d.Set("debuge", body)
 
 	resourceDBCollectorRead(ctx, d, m)
 
@@ -112,20 +141,20 @@ func resourceDBCollectorRead(ctx context.Context, d *schema.ResourceData, m inte
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	// provider_data := m.(map[string]string)
-  // base_url := provider_data["base_url"]
-	//
-  // url := base_url + "/controller/rest/databases/collectors"
-	//
-	// req, _ := http.NewRequest("GET", url, nil)
-	//
-	// req.SetBasicAuth(provider_data["username"], provider_data["password"])
-	//
-	// req.Header.Add("cache-control", "no-cache")
-	//
-	// res, _ := http.DefaultClient.Do(req)
-	//
-	// defer res.Body.Close()
+	provider_data := m.(map[string]string)
+  base_url := provider_data["base_url"]
+
+  url := base_url + "/controller/rest/databases/collectors"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.SetBasicAuth(provider_data["username"], provider_data["password"])
+
+	req.Header.Add("cache-control", "no-cache")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
 	// body, _ := ioutil.ReadAll(res.Body)
 	//
 	// type Entries []struct {
