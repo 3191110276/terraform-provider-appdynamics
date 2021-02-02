@@ -69,6 +69,11 @@ func resourceDBCollector() *schema.Resource {
 				Optional: true,
 				Computed: true,
 			},
+			"debugc": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
 		},
 	}
 }
@@ -103,11 +108,14 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 
 	res, err := http.DefaultClient.Do(req)
   if err != nil {
-		d.Set("debuga", string(err.Error()))
+		d.Set("debuga", "Error detected")
+		d.Set("debugb", string(err.Error()))
   }
 
 	defer res.Body.Close()
-	//body, _ := ioutil.ReadAll(res.Body)
+	body, _ := ioutil.ReadAll(res.Body)
+
+	d.Set("debugc", string(body))
 
 	resourceDBCollectorRead(ctx, d, m)
 
@@ -214,7 +222,7 @@ func resourceDBCollectorRead(ctx context.Context, d *schema.ResourceData, m inte
 
 	for i := 0; i < len(data); i++ {
 	if (data[i].Config.Name == d.Get("name").(string)) {
-	  d.Set("debugb", "found")
+	  d.Set("debuga", "found_entry")
 	}
 	}
 
