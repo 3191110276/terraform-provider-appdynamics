@@ -59,6 +59,11 @@ func resourceDBCollector() *schema.Resource {
 				Optional: true,
 				Computed: true,
 			},
+			"debuga": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
 		},
 	}
 }
@@ -73,14 +78,14 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 
   url := base_url + "/controller/rest/databases/collectors/create"
 
-  req_string := "{\"type\":\"TYPE\",\"name\":\"NAME\",\"hostname\":\"HOSTNAME\",\"port\":\"PORT\",\"username\":\"USERNAME\",\"password\":\"PASSWORD\",\"enabled\":true,\"agentName\":\"AGENTNAME\"}"
+  req_string := "{\"type\":\"TYPE\",\"name\":\"NAME\",\"hostname\":\"HOST\",\"port\":\"PORT\",\"username\":\"USER\",\"password\":\"PASSWORD\",\"enabled\":true,\"agentName\":\"AGENT\"}"
   req_string = strings.Replace(req_string, "TYPE", d.Get("type").(string), 1)
 	req_string = strings.Replace(req_string, "NAME", d.Get("name").(string), 1)
-	req_string = strings.Replace(req_string, "HOSTNAME", d.Get("hostname").(string), 1)
+	req_string = strings.Replace(req_string, "HOST", d.Get("hostname").(string), 1)
 	req_string = strings.Replace(req_string, "PORT", d.Get("port").(string), 1)
-	req_string = strings.Replace(req_string, "USERNAME", d.Get("username").(string), 1)
+	req_string = strings.Replace(req_string, "USER", d.Get("username").(string), 1)
 	req_string = strings.Replace(req_string, "PASSWORD", d.Get("password").(string), 1)
-	req_string = strings.Replace(req_string, "AGENTNAME", d.Get("agent_name").(string), 1)
+	req_string = strings.Replace(req_string, "AGENT", d.Get("agent_name").(string), 1)
 
   payload := strings.NewReader(req_string)
 
@@ -94,7 +99,8 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 	res, _ := http.DefaultClient.Do(req)
 
 	defer res.Body.Close()
-	//body, _ := ioutil.ReadAll(res.Body)
+	body, _ := ioutil.ReadAll(res.Body)
+	d.Set("debuga", body)
 
 	resourceDBCollectorRead(ctx, d, m)
 
