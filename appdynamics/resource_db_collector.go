@@ -50,7 +50,7 @@ func resourceDBCollector() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 			},
-			"agentName": &schema.Schema{
+			"agent_name": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
 			},
@@ -75,7 +75,7 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 	req_string = strings.Replace(req_string, "PORT", d.Get("port").(string), 1)
 	req_string = strings.Replace(req_string, "USERNAME", d.Get("username").(string), 1)
 	req_string = strings.Replace(req_string, "PASSWORD", d.Get("password").(string), 1)
-	req_string = strings.Replace(req_string, "AGENTNAME", d.Get("agentName").(string), 1)
+	req_string = strings.Replace(req_string, "AGENTNAME", d.Get("agent_name").(string), 1)
 
   payload := strings.NewReader(req_string)
 
