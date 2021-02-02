@@ -99,8 +99,8 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 	res, _ := http.DefaultClient.Do(req)
 
 	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-	d.Set("debuga", body)
+	//body, _ := ioutil.ReadAll(res.Body)
+	d.Set("debuga", res)
 
 	resourceDBCollectorRead(ctx, d, m)
 
