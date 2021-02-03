@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     appdynamics = {
-      version = "0.0.81"
+      version = "0.0.82"
       source = "3191110276/appdynamics"
     }
   }
@@ -28,7 +28,7 @@ resource "appdynamics_db_collector" "brewery" {
   name = "Inventory DB"
   type = "MYSQL"
   hostname = "brewery-inventorydb-service.app"
-  port = "8080"
+  port = "80"
   username = "root"
   password = "root"
   agent_name = "brewery"

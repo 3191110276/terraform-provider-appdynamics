@@ -195,9 +195,26 @@ func resourceDBCollectorRead(ctx context.Context, d *schema.ResourceData, m inte
 	_ = json.Unmarshal([]byte(body), &data)
 
 	for i := 0; i < len(data); i++ {
-		if (data[i].Config.Name == d.Get("name").(string)) {
-			d.SetId(fmt.Sprint(data[i].ConfigID))
-		}
+   if (d.Id() == "") {
+		   if (data[i].Config.Name == d.Get("name").(string)) {
+			   d.SetId(fmt.Sprint(data[i].ConfigID))
+         d.Set("name", data[i].Config.Name)
+				 d.Set("type", data[i].Config.Type)
+				 d.Set("hostname", data[i].Config.Hostname)
+				 d.Set("port", data[i].Config.Port)
+				 d.Set("username", data[i].Config.Username)
+				 d.Set("agent_name", data[i].Config.AgentName)
+		   }
+		 } else {
+       if (fmt.Sprint(data[i].ConfigID) == d.Id()) {
+				 d.Set("name", data[i].Config.Name)
+				 d.Set("type", data[i].Config.Type)
+				 d.Set("hostname", data[i].Config.Hostname)
+				 d.Set("port", data[i].Config.Port)
+				 d.Set("username", data[i].Config.Username)
+				 d.Set("agent_name", data[i].Config.AgentName)
+			 }
+	 }
 	}
 
 	return diags
