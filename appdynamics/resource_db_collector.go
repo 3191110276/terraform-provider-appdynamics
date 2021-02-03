@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"strconv"
+	"encoding/base64"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -101,9 +102,11 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 
 	req, _ := http.NewRequest("POST", url, payload)
 
-	//req.SetBasicAuth(provider_data["username"], provider_data["password"])
+	combined := provider_data["username"] + ":" + provider_data["password"]
+  sEnc := base64.StdEncoding.EncodeToString([]byte(combined))
+  basic_auth := "Basic " + sEnc
 
-  req.Header.Add("Authorization", "Basic bWltYXVyZXJAY2VlcjptaW1hdXJlcg==")
+  req.Header.Add("Authorization", basic_auth)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("cache-control", "no-cache")
 
@@ -136,8 +139,11 @@ func resourceDBCollectorRead(ctx context.Context, d *schema.ResourceData, m inte
 
 	req, _ := http.NewRequest("GET", url, nil)
 
-	req.SetBasicAuth(provider_data["username"], provider_data["password"])
+	combined := provider_data["username"] + ":" + provider_data["password"]
+  sEnc := base64.StdEncoding.EncodeToString([]byte(combined))
+  basic_auth := "Basic " + sEnc
 
+  req.Header.Add("Authorization", basic_auth)
 	req.Header.Add("cache-control", "no-cache")
 
 	res, _ := http.DefaultClient.Do(req)
@@ -258,8 +264,11 @@ func resourceDBCollectorUpdate(ctx context.Context, d *schema.ResourceData, m in
 
 	req, _ := http.NewRequest("POST", url, payload)
 
-	req.SetBasicAuth(provider_data["username"], provider_data["password"])
+	combined := provider_data["username"] + ":" + provider_data["password"]
+  sEnc := base64.StdEncoding.EncodeToString([]byte(combined))
+  basic_auth := "Basic " + sEnc
 
+  req.Header.Add("Authorization", basic_auth)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("cache-control", "no-cache")
 
