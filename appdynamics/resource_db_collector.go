@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
-	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -53,11 +52,6 @@ func resourceDBCollector() *schema.Resource {
 			"agent_name": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
-			},
-			"version": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
 			},
 		},
 	}
@@ -215,14 +209,6 @@ func resourceDBCollectorUpdate(ctx context.Context, d *schema.ResourceData, m in
   base_url := provider_data["base_url"]
 
   url := base_url + "/controller/restui/allApplications/updateApplicationDetails"
-
-	current_version, err := strconv.ParseInt(d.Get("version").(string), 10, 64)
-	if err != nil {
-		return diag.FromErr(err)
-	}
-	new_version := current_version + 1
-	new_version_string := fmt.Sprint(new_version)
-	d.Set("version", new_version_string)
 
   req_string := "{\"id\":ID,\"type\":\"TYPE\",\"name\":\"NAME\",\"hostname\":\"HOST\",\"port\":\"PORT\",\"username\":\"USER\",\"password\":\"PASSWORD\",\"enabled\":true,\"agentName\":\"AGENT\"}"
 	req_string = strings.Replace(req_string, "TYPE", d.Id(), 1)
