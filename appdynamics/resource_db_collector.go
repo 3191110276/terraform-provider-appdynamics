@@ -107,15 +107,13 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 	req.Header.Add("cache-control", "no-cache")
 
 	res, err := http.DefaultClient.Do(req)
-  if err != nil {
-		d.Set("debuga", "Error detected")
-		d.Set("debugb", string(err.Error()))
-  }
+  if err != nil {}
 
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 
-	d.Set("debugc", string(body))
+	d.Set("debuga", string(body))
+	d.Set("debugb", string(res.StatusCode))
 
 	resourceDBCollectorRead(ctx, d, m)
 
