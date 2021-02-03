@@ -208,7 +208,7 @@ func resourceDBCollectorUpdate(ctx context.Context, d *schema.ResourceData, m in
 	provider_data := m.(map[string]string)
   base_url := provider_data["base_url"]
 
-  url := base_url + "/controller/restui/allApplications/updateApplicationDetails"
+  url := base_url + "/controller/rest/databases/collectors/update"
 
   req_string := "{\"id\":ID,\"type\":\"TYPE\",\"name\":\"NAME\",\"hostname\":\"HOST\",\"port\":\"PORT\",\"username\":\"USER\",\"password\":\"PASSWORD\",\"enabled\":true,\"agentName\":\"AGENT\"}"
 	req_string = strings.Replace(req_string, "TYPE", d.Id(), 1)
