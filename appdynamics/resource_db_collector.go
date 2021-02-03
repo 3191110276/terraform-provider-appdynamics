@@ -59,26 +59,6 @@ func resourceDBCollector() *schema.Resource {
 				Optional: true,
 				Computed: true,
 			},
-			"debuga": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-			},
-			"debugb": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-			},
-			"debugc": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-			},
-			"debugd": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-			},
 		},
 	}
 }
@@ -222,8 +202,6 @@ func resourceDBCollectorRead(ctx context.Context, d *schema.ResourceData, m inte
 
 	for i := 0; i < len(data); i++ {
 		if (data[i].Config.Name == d.Get("name").(string)) {
-		  d.Set("debuga", "found_entry")
-			d.SetId("1")
 			d.SetId(fmt.Sprint(data[i].ConfigID))
 		}
 	}
@@ -246,11 +224,15 @@ func resourceDBCollectorUpdate(ctx context.Context, d *schema.ResourceData, m in
 	new_version_string := fmt.Sprint(new_version)
 	d.Set("version", new_version_string)
 
-  req_string := "{\n\t\"id\":APPID,\n\t\"version\":APPVERSION,\n\t\"name\":\"APPNAME\",\"description\":\"DESCRIPTION\"\n\t\n}"
-  req_string = strings.Replace(req_string, "APPID", d.Id(), 1)
-	req_string = strings.Replace(req_string, "APPVERSION", d.Get("version").(string), 1)
-	req_string = strings.Replace(req_string, "APPNAME", d.Get("name").(string), 1)
-	req_string = strings.Replace(req_string, "DESCRIPTION", d.Get("description").(string), 1)
+  req_string := "{\"id\":ID,\"type\":\"TYPE\",\"name\":\"NAME\",\"hostname\":\"HOST\",\"port\":\"PORT\",\"username\":\"USER\",\"password\":\"PASSWORD\",\"enabled\":true,\"agentName\":\"AGENT\"}"
+	req_string = strings.Replace(req_string, "TYPE", d.Id(), 1)
+	req_string = strings.Replace(req_string, "TYPE", d.Get("type").(string), 1)
+	req_string = strings.Replace(req_string, "NAME", d.Get("name").(string), 1)
+	req_string = strings.Replace(req_string, "HOST", d.Get("hostname").(string), 1)
+	req_string = strings.Replace(req_string, "PORT", d.Get("port").(string), 1)
+	req_string = strings.Replace(req_string, "USER", d.Get("username").(string), 1)
+	req_string = strings.Replace(req_string, "PASSWORD", d.Get("password").(string), 1)
+	req_string = strings.Replace(req_string, "AGENT", d.Get("agent_name").(string), 1)
 
 	payload := strings.NewReader(req_string)
 
