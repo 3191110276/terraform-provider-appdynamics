@@ -110,10 +110,11 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
   if err != nil {}
 
 	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
+	//body, _ := ioutil.ReadAll(res.Body)
 
-	d.Set("debuga", string(body))
-	d.Set("debugb", string(res.StatusCode))
+	d.Set("debuga", string(res.StatusCode))
+	d.Set("debugb", res.StatusCode)
+  d.Set("debugc", strconv.Itoa(res.StatusCode))
 
 	resourceDBCollectorRead(ctx, d, m)
 
