@@ -9,7 +9,6 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"strconv"
-	"encoding/base64"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -107,13 +106,8 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 
 	req, _ := http.NewRequest("POST", url, payload)
 
-	combined := provider_data["username"] + ":" + provider_data["password"]
-  sEnc := base64.StdEncoding.EncodeToString([]byte(combined))
-  basic_auth := "Basic " + sEnc
+	req.SetBasicAuth(provider_data["username"], provider_data["password"])
 
-	d.Set("debugb", string(basic_auth))
-
-  req.Header.Add("Authorization", basic_auth)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("cache-control", "no-cache")
 
@@ -122,15 +116,6 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 
 	defer res.Body.Close()
 	//body, _ := ioutil.ReadAll(res.Body)
-
-  if res.StatusCode >= 200 && res.StatusCode < 300 {
-		d.Set("debuga", "Status 200")
-	} else {
-		d.Set("debuga", "Status not 200")
-	}
-
-	d.Set("debugc", provider_data["username"])
-	d.Set("debugd", provider_data["password"])
 
 	resourceDBCollectorRead(ctx, d, m)
 
@@ -149,11 +134,8 @@ func resourceDBCollectorRead(ctx context.Context, d *schema.ResourceData, m inte
 
 	req, _ := http.NewRequest("GET", url, nil)
 
-	combined := provider_data["username"] + ":" + provider_data["password"]
-  sEnc := base64.StdEncoding.EncodeToString([]byte(combined))
-  basic_auth := "Basic " + sEnc
+	req.SetBasicAuth(provider_data["username"], provider_data["password"])
 
-  req.Header.Add("Authorization", basic_auth)
 	req.Header.Add("cache-control", "no-cache")
 
 	res, _ := http.DefaultClient.Do(req)
@@ -239,12 +221,12 @@ func resourceDBCollectorRead(ctx context.Context, d *schema.ResourceData, m inte
 	_ = json.Unmarshal([]byte(body), &data)
 
 	for i := 0; i < len(data); i++ {
-	if (data[i].Config.Name == d.Get("name").(string)) {
-	  d.Set("debuga", "found_entry")
+		if (data[i].Config.Name == d.Get("name").(string)) {
+		  d.Set("debuga", "found_entry")
+			d.SetId("1")
+			d.SetId(fmt.Sprint(data[i].ConfigID))
+		}
 	}
-	}
-
-	d.SetId("1")
 
 	return diags
 }
@@ -274,11 +256,8 @@ func resourceDBCollectorUpdate(ctx context.Context, d *schema.ResourceData, m in
 
 	req, _ := http.NewRequest("POST", url, payload)
 
-	combined := provider_data["username"] + ":" + provider_data["password"]
-  sEnc := base64.StdEncoding.EncodeToString([]byte(combined))
-  basic_auth := "Basic " + sEnc
+  req.SetBasicAuth(provider_data["username"], provider_data["password"])
 
-  req.Header.Add("Authorization", basic_auth)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("cache-control", "no-cache")
 
