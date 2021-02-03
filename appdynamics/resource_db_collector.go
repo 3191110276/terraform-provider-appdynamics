@@ -106,7 +106,7 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
   sEnc := base64.StdEncoding.EncodeToString([]byte(combined))
   basic_auth := "Basic " + sEnc
 
-	d.Set("debuga", basic_auth)
+	d.Set("debugb", string(basic_auth))
 
   req.Header.Add("Authorization", basic_auth)
 	req.Header.Add("Content-Type", "application/json")
@@ -122,6 +122,7 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 		d.Set("debuga", "Status 200")
 	} else {
 		d.Set("debuga", "Status not 200")
+		d.Set("debugc", string(res.StatusCode))
 	}
 
 	resourceDBCollectorRead(ctx, d, m)
