@@ -2,7 +2,7 @@
 page_title: "application Resource - terraform-provider-appdynamics"
 subcategory: ""
 description: |-
-  The order resource allows you to configure an AppDynamics application.
+  The appdynamics_apm_application resource allows you to configure an AppDynamics application.
 ---
 
 # Resource `appdynamics_apm_application`
