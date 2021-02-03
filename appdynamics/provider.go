@@ -44,14 +44,18 @@ func Provider() *schema.Provider {
 func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
 	base_url := d.Get("base_url").(string)
 	token := d.Get("token").(string)
+	username := d.Get("username").(string)
+	password := d.Get("password").(string)
 
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	if (base_url != "") && (token != "") {
+	if (base_url != "") && (token != "") && (username != "") && (password != "") {
 		provider_data := map[string]string{
 			"base_url": base_url,
 			"token":token,
+			"username":username,
+			"password":password,
 		}
 
 		return provider_data, diags
