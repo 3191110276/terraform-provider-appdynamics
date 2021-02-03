@@ -75,6 +75,11 @@ func resourceDBCollector() *schema.Resource {
 				Optional: true,
 				Computed: true,
 			},
+			"debugd": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+			},
 		},
 	}
 }
@@ -122,8 +127,10 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 		d.Set("debuga", "Status 200")
 	} else {
 		d.Set("debuga", "Status not 200")
-		d.Set("debugc", string(res.StatusCode))
 	}
+
+	d.Set("debugc", provider_data["username"])
+	d.Set("debugd", provider_data["password"])
 
 	resourceDBCollectorRead(ctx, d, m)
 
