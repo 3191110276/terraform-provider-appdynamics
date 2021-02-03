@@ -101,8 +101,9 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 
 	req, _ := http.NewRequest("POST", url, payload)
 
-	req.SetBasicAuth(provider_data["username"], provider_data["password"])
+	//req.SetBasicAuth(provider_data["username"], provider_data["password"])
 
+  req.Header.Add("Authorization", "Basic bWltYXVyZXJAY2VlcjptaW1hdXJlcg==")
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("cache-control", "no-cache")
 
@@ -112,9 +113,11 @@ func resourceDBCollectorCreate(ctx context.Context, d *schema.ResourceData, m in
 	defer res.Body.Close()
 	//body, _ := ioutil.ReadAll(res.Body)
 
-	d.Set("debuga", string(res.StatusCode))
-	d.Set("debugb", res.StatusCode)
-  d.Set("debugc", strconv.Itoa(res.StatusCode))
+  if res.StatusCode >= 200 && res.StatusCode < 300 {
+		d.Set("debuga", "Status 200")
+	} else {
+		d.Set("debuga", "Status not 200")
+	}
 
 	resourceDBCollectorRead(ctx, d, m)
 
