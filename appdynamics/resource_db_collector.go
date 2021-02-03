@@ -211,7 +211,7 @@ func resourceDBCollectorUpdate(ctx context.Context, d *schema.ResourceData, m in
   url := base_url + "/controller/rest/databases/collectors/update"
 
   req_string := "{\"id\":ID,\"type\":\"TYPE\",\"name\":\"NAME\",\"hostname\":\"HOST\",\"port\":\"PORT\",\"username\":\"USER\",\"password\":\"PASSWORD\",\"enabled\":true,\"agentName\":\"AGENT\"}"
-	req_string = strings.Replace(req_string, "TYPE", d.Id(), 1)
+	req_string = strings.Replace(req_string, "ID", d.Id(), 1)
 	req_string = strings.Replace(req_string, "TYPE", d.Get("type").(string), 1)
 	req_string = strings.Replace(req_string, "NAME", d.Get("name").(string), 1)
 	req_string = strings.Replace(req_string, "HOST", d.Get("hostname").(string), 1)

@@ -116,7 +116,6 @@ func resourceEUMApplicationRead(ctx context.Context, d *schema.ResourceData, m i
 	data := Entries{}
 	_ = json.Unmarshal([]byte(body), &data)
 
-
 	for i := 0; i < len(data); i++ {
 		if (d.Id() == "") {
 			if (data[i].Name == d.Get("name").(string)) {

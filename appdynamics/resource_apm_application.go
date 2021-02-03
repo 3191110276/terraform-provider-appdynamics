@@ -113,10 +113,17 @@ func resourceAPMApplicationRead(ctx context.Context, d *schema.ResourceData, m i
 	_ = json.Unmarshal([]byte(body), &data)
 
 	for i := 0; i < len(data); i++ {
-		if (data[i].Name == d.Get("name").(string)) {
-			d.SetId(fmt.Sprint(data[i].ID))
-			d.Set("name", data[i].Name)
-			d.Set("description", data[i].Description)
+		if (d.Id() == "") {
+			if (data[i].Name == d.Get("name").(string)) {
+				d.SetId(fmt.Sprint(data[i].ID))
+				d.Set("name", data[i].Name)
+				d.Set("description", data[i].Description)
+			}
+		} else {
+			if (fmt.Sprint(data[i].ID) == d.Id()) {
+				d.Set("name", data[i].Name)
+				d.Set("description", data[i].Description)
+			}
 		}
 	}
 
