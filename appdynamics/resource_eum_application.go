@@ -90,6 +90,8 @@ func resourceEUMApplicationRead(ctx context.Context, d *schema.ResourceData, m i
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
+	time.Sleep(2 * time.Second)
+
 	provider_data := m.(map[string]string)
   base_url := provider_data["base_url"]
 	token := provider_data["token"]
